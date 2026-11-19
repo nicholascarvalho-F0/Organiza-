@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Organizaê: gerenciador de tarefas que funciona direto no navegador.">
+  <title>Organizaê — Gerenciador de tarefas</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#lista">Ir para a lista de tarefas</a>
+
+  <header class="topo">
+    <div class="container">
+      <h1>Organizaê</h1>
+      <p>Anote, acompanhe e conclua suas tarefas.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="contadores" aria-label="Resumo das tarefas">
+      <div class="contador"><span id="cont-total">0</span><small>Total</small></div>
+      <div class="contador"><span id="cont-pendentes">0</span><small>Pendentes</small></div>
+      <div class="contador"><span id="cont-concluidas">0</span><small>Concluídas</small></div>
+    </section>
+
+    <section class="painel" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Nova tarefa</h2>
+      <form id="form-tarefa" novalidate>
+        <div class="campo">
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" name="titulo" maxlength="80" placeholder="Ex.: Entregar o trabalho de Web" required autocomplete="off">
+          <p class="erro" id="erro-titulo" role="alert" hidden></p>
+        </div>
+        <div class="campo">
+          <label for="descricao">Descrição <span class="opcional">(opcional)</span></label>
+          <textarea id="descricao" name="descricao" rows="2" maxlength="240" placeholder="Detalhes que ajudam a lembrar"></textarea>
+        </div>
+        <div class="linha">
+          <div class="campo">
+            <label for="prioridade">Prioridade</label>
+            <select id="prioridade" name="prioridade">
+              <option value="baixa">Baixa</option>
+              <option value="media" selected>Média</option>
+              <option value="alta">Alta</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="prazo">Prazo <span class="opcional">(opcional)</span></label>
+            <input type="date" id="prazo" name="prazo">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primario">Adicionar tarefa</button>
+      </form>
+    </section>
+
+    <section class="painel" aria-labelledby="titulo-lista">
+      <div class="cabecalho-lista">
+        <h2 id="titulo-lista">Suas tarefas</h2>
+        <button type="button" class="btn btn-texto" id="limpar-concluidas">Remover concluídas</button>
+      </div>
+
+      <div class="ferramentas">
+        <div class="filtros" role="group" aria-label="Filtrar por status">
+          <button type="button" class="filtro ativo" data-filtro="todas" aria-pressed="true">Todas</button>
+          <button type="button" class="filtro" data-filtro="pendentes" aria-pressed="false">Pendentes</button>
+          <button type="button" class="filtro" data-filtro="concluidas" aria-pressed="false">Concluídas</button>
+        </div>
+        <label class="busca">
+          <span class="sr-only">Buscar tarefa</span>
+          <input type="search" id="busca" placeholder="Buscar tarefa" autocomplete="off">
+        </label>
+      </div>
+
+      <ul id="lista" class="lista" aria-live="polite"></ul>
+      <p id="vazio" class="vazio" hidden></p>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="container">Organizaê · Trabalho prático individual · HTML, CSS e JavaScript puro</div>
+  </footer>
+
+  <dialog id="dlg-editar" aria-labelledby="titulo-editar">
+    <form id="form-editar" method="dialog" novalidate>
+      <h2 id="titulo-editar">Editar tarefa</h2>
+      <div class="campo">
+        <label for="edit-titulo">Título</label>
+        <input type="text" id="edit-titulo" maxlength="80" required autocomplete="off">
+        <p class="erro" id="erro-edit" role="alert" hidden></p>
+      </div>
+      <div class="campo">
+        <label for="edit-descricao">Descrição</label>
+        <textarea id="edit-descricao" rows="2" maxlength="240"></textarea>
+      </div>
+      <div class="linha">
+        <div class="campo">
+          <label for="edit-prioridade">Prioridade</label>
+          <select id="edit-prioridade">
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="edit-prazo">Prazo</label>
+          <input type="date" id="edit-prazo">
+        </div>
+      </div>
+      <div class="acoes-dlg">
+        <button type="button" class="btn btn-texto" id="cancelar-edicao">Cancelar</button>
+        <button type="submit" class="btn btn-primario">Salvar alterações</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-excluir" aria-labelledby="titulo-excluir">
+    <form method="dialog">
+      <h2 id="titulo-excluir">Excluir tarefa?</h2>
+      <p id="texto-excluir"></p>
+      <div class="acoes-dlg">
+        <button type="button" class="btn btn-texto" id="cancelar-exclusao">Manter tarefa</button>
+        <button type="button" class="btn btn-perigo" id="confirmar-exclusao">Excluir tarefa</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
